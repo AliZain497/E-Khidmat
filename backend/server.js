@@ -11,21 +11,29 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Middleware - CORS with multiple frontend domains allowed
+// ✅ Allowed frontend origins
 const allowedOrigins = [
-  'https://e-khidmat.vercel.app',  // Production frontend
-  'http://localhost:3000'           // Local development frontend
+  'https://e-khidmat.vercel.app',
+  'http://localhost:3000',
+  /^https:\/\/e-khidmat.*\.vercel\.app$/  // ✅ Optional: allow all vercel preview deployments
 ];
 
+// ✅ CORS Middleware (use this here)
 app.use(cors({
   origin: function(origin, callback) {
-    // allow requests with no origin (like Postman, curl)
-    if (!origin) return callback(null, true);
+    if (!origin) return callback(null, true); // allow Postman, curl
 
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `The CORS policy for this site does not allow access from the specified Origin: ${origin}`;
+    const isAllowed = allowedOrigins.some(o => {
+      if (typeof o === 'string') return o === origin;
+      if (o instanceof RegExp) return o.test(origin);
+      return false;
+    });
+
+    if (!isAllowed) {
+      const msg = `🚫 CORS blocked request from origin: ${origin}`;
       return callback(new Error(msg), false);
     }
+
     return callback(null, true);
   },
   credentials: true,
@@ -33,7 +41,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// ✅ MongoDB Connection
+// ✅ Then continue with DB connection and routes
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -41,23 +49,21 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log("✅ MongoDB connected successfully"))
 .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// ✅ Routes
+// Routes
 app.use("/api/employees", employeeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/stock", stockRoutes);
 
-// ✅ Health check route
 app.get("/", (req, res) => {
   res.send("E-Khidmat backend is running 🚀");
 });
 
-// ✅ Global error handling middleware
+// Error handler
 app.use((err, req, res, next) => {
   console.error("Global error handler:", err);
   res.status(500).json({ message: "Internal server error" });
 });
 
-// ✅ Start server
 const PORT = process.env.PORT || 5000;
 const HOST = process.env.HOST || '0.0.0.0';
 
