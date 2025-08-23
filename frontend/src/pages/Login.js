@@ -32,7 +32,7 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100">
-      {/* Topbar */}
+      {/* Topbar/Header */}
       <header className="bg-primary text-white p-4 shadow">
         <h1 className="text-2xl font-bold text-center">E-Khidmat</h1>
       </header>
@@ -63,6 +63,17 @@ export default function Login() {
               className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
               required
             />
+
+            {/* Forgot Password link */}
+            <div className="text-right text-sm mt-1">
+              <Link
+                to="/forgot-password"
+                className="text-primary hover:underline"
+              >
+                Forgot Password?
+              </Link>
+            </div>
+
             <button
               type="submit"
               className="w-full bg-primary text-white py-3 rounded-lg hover:bg-green-800 transition"

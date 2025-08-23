@@ -1,22 +1,27 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import Sidebar from "./Sidebar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Layout({ children }) {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) {
+
+    // List of routes that don’t require authentication
+    const publicRoutes = ["/signup", "/otp/verify", "/"];
+
+    // If not authenticated and trying to access a protected route
+    if (!token && !publicRoutes.includes(location.pathname)) {
       navigate("/login");
     }
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-
       {/* Sidebar for desktop */}
       {localStorage.getItem("token") && (
         <aside className="hidden sm:flex sm:flex-col fixed top-0 left-0 w-64 h-full bg-primary text-white z-30">
@@ -46,14 +51,7 @@ export default function Layout({ children }) {
 
       {/* Main content wrapper */}
       <main
-        className={`
-          flex-1
-          pt-4 px-4 pb-8
-          sm:ml-64
-          transition-all duration-300
-          min-h-screen
-          flex flex-col
-        `}
+        className={`flex-1 pt-4 px-4 pb-8 sm:ml-64 transition-all duration-300 min-h-screen flex flex-col`}
       >
         {/* Mobile topbar */}
         {localStorage.getItem("token") && (

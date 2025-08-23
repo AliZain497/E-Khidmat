@@ -11,7 +11,8 @@ import StockInPage from "./pages/StockIn";
 import StockHistory from "./pages/StockInHistory";
 import StockOut from "./pages/Stockout";
 import StockOutHistory from "./pages/StockOutHistory";
-
+import ForgotPassword from "./pages/ForgetPassword";
+import ResetPassword from "./pages/ResetPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,7 +25,8 @@ function App() {
             <Route path="/" element={<Signup />} />   {/* Default signup */}
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/otp-verify" element={<OtpVerify />} />
+            <Route path="/otp/verify" element={<OtpVerify />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} /> 
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/employees" element={<Employees />} />
             <Route path="/employees/add" element={<AddEmployeePage />} />
@@ -33,6 +35,7 @@ function App() {
             <Route path="/stockIn/history" element={<StockHistory />} />
             <Route path="/stock/out" element={<StockOut />} />
             <Route path="/stockOut/history" element={<StockOutHistory />} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
           </Routes>
 
           {/* ToastContainer outside Routes */}

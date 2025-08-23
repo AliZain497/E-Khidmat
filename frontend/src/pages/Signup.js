@@ -17,16 +17,24 @@ export default function Signup() {
       const res = await fetch("http://localhost:5000/api/auth/signup/request-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email }), // only email for OTP
+        body: JSON.stringify({ email: formData.email }), // Only email for OTP
       });
 
       const data = await res.json();
 
       if (res.ok) {
+        console.log("Signup successful. Navigating with data:", formData);
         toast.success("OTP sent to your email!");
-        navigate("/otp-verify", { state: formData }); // pass full data to OTP verify page
+        
+        // ✅ Save formData temporarily in localStorage (in case of refresh)
+        // localStorage.setItem("signupData", JSON.stringify(formData));
+        localStorage.setItem("signupData", JSON.stringify(formData));
+
+
+        // ✅ Navigate to OTP verification page with state
+        navigate("/otp/verify", { state: formData });
       } else {
-        toast.error(data.message || "Error signing up");
+        toast.error(data.message || "Error sending OTP");
       }
     } catch (err) {
       toast.error("Network error, please try again later");
@@ -43,9 +51,7 @@ export default function Signup() {
       {/* Signup form container */}
       <div className="flex-1 flex items-center justify-center bg-gray-100">
         <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md border-t-4 border-primary">
-          <h2 className="text-xl font-bold text-center text-primary mb-4">
-            Create Account
-          </h2>
+          <h2 className="text-xl font-bold text-center text-primary mb-4">Create Account</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <input
               type="text"
