@@ -5,14 +5,18 @@ import dotenv from "dotenv";
 
 import employeeRoutes from "./routes/employee.js";
 import authRoutes from "./routes/authRoutes.js";
-import stockRoutes from "./routes/stockRoutes.js"; // ✅ Stock route added
+import stockRoutes from "./routes/stockRoutes.js";
 
 dotenv.config();
 
 const app = express();
 
-// ✅ Middleware
-app.use(cors());
+// ✅ Middleware - CORS with frontend domain allowed
+app.use(cors({
+  origin: 'https://e-khidmat.vercel.app',  // tumhara frontend domain
+  credentials: true, // agar cookies/session use kar rahe ho to, nahi to hata bhi sakte ho
+}));
+
 app.use(express.json());
 
 // ✅ MongoDB Connection
@@ -26,7 +30,7 @@ mongoose.connect(process.env.MONGO_URI, {
 // ✅ Routes
 app.use("/api/employees", employeeRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/stock", stockRoutes); // ✅ Register stock routes here
+app.use("/api/stock", stockRoutes);
 
 // ✅ Health check route
 app.get("/", (req, res) => {
