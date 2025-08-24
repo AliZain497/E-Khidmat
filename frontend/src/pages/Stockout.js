@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import { Html5Qrcode } from "html5-qrcode";
 import jsQR from "jsqr";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+
 export default function StockOutPage() {
   const [formData, setFormData] = useState({
     productName: "",
@@ -16,6 +18,7 @@ export default function StockOutPage() {
   const [scanning, setScanning] = useState(false);
   const [cameraRequested, setCameraRequested] = useState(false);
   const [permissionDenied, setPermissionDenied] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const html5QrCodeRef = useRef(null);
 
@@ -65,7 +68,6 @@ export default function StockOutPage() {
     reader.readAsDataURL(file);
   };
 
-  // Memoize toggleScanner so it's stable between renders
   const toggleScanner = useCallback(() => {
     if (scanning) {
       html5QrCodeRef.current
@@ -95,7 +97,7 @@ export default function StockOutPage() {
     const onScanSuccess = (decodedText) => {
       setFormData((prev) => ({ ...prev, productName: decodedText }));
       toast.success(`QR Code Scanned: ${decodedText}`);
-      toggleScanner(); // Safe to call now
+      toggleScanner();
     };
 
     const checkCameraPermission = async () => {
@@ -122,7 +124,7 @@ export default function StockOutPage() {
       html5QrCodeRef.current?.clear().catch(() => {});
       html5QrCodeRef.current = null;
     };
-  }, [scanning, toggleScanner]); // Added toggleScanner here
+  }, [scanning, toggleScanner]);
 
   useEffect(() => {
     if (!scanning) {
@@ -139,8 +141,9 @@ export default function StockOutPage() {
       return;
     }
 
+    setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/stock/out", {
+      const res = await fetch(`${BACKEND_URL}/stock/out`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -153,6 +156,7 @@ export default function StockOutPage() {
 
       if (!res.ok) {
         toast.error(data.message || "Error during stock out");
+        setLoading(false);
         return;
       }
 
@@ -169,6 +173,7 @@ export default function StockOutPage() {
       console.error("❌ Stock Out error:", error);
       toast.error("Network error");
     }
+    setLoading(false);
   };
 
   return (
@@ -227,6 +232,7 @@ export default function StockOutPage() {
                 id="qr-upload"
                 onChange={handleFileChange}
                 className="w-full"
+                disabled={loading}
               />
             </div>
           )}
@@ -244,6 +250,7 @@ export default function StockOutPage() {
               className="w-full p-3 border rounded-lg"
               required
               autoComplete="off"
+              disabled={loading}
             />
             <input
               type="number"
@@ -254,6 +261,7 @@ export default function StockOutPage() {
               className="w-full p-3 border rounded-lg"
               min={1}
               required
+              disabled={loading}
             />
             <input
               type="text"
@@ -263,6 +271,7 @@ export default function StockOutPage() {
               placeholder="Receiver"
               className="w-full p-3 border rounded-lg"
               autoComplete="off"
+              disabled={loading}
             />
             <input
               type="date"
@@ -270,6 +279,7 @@ export default function StockOutPage() {
               value={formData.issueDate}
               onChange={handleChange}
               className="w-full p-3 border rounded-lg"
+              disabled={loading}
             />
             <textarea
               name="description"
@@ -277,12 +287,14 @@ export default function StockOutPage() {
               onChange={handleChange}
               placeholder="Description (optional)"
               className="w-full p-3 border rounded-lg"
+              disabled={loading}
             />
             <button
               type="submit"
-              className="w-full bg-primary text-white py-3 rounded-lg hover:bg-red-700"
+              className="w-full bg-primary text-white py-3 rounded-lg hover:bg-red-700 disabled:opacity-50"
+              disabled={loading}
             >
-              Submit Stock Out
+              {loading ? "Processing..." : "Submit Stock Out"}
             </button>
           </form>
         </div>
