@@ -73,7 +73,7 @@ export default function StockOutPage() {
       html5QrCodeRef.current
         ?.stop()
         .then(() => html5QrCodeRef.current.clear())
-        .catch(() => {})
+        .catch(() => { })
         .finally(() => {
           html5QrCodeRef.current = null;
           setScanning(false);
@@ -120,8 +120,8 @@ export default function StockOutPage() {
     checkCameraPermission();
 
     return () => {
-      html5QrCodeRef.current?.stop().catch(() => {});
-      html5QrCodeRef.current?.clear().catch(() => {});
+      html5QrCodeRef.current?.stop().catch(() => { });
+      html5QrCodeRef.current?.clear().catch(() => { });
       html5QrCodeRef.current = null;
     };
   }, [scanning, toggleScanner]);
@@ -133,6 +133,48 @@ export default function StockOutPage() {
     }
   }, [scanning]);
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!formData.quantity || formData.quantity <= 0) {
+  //     toast.error("Please enter a valid quantity");
+  //     return;
+  //   }
+
+  //   setLoading(true);
+  //   try {
+  //     const res = await fetch(`${BACKEND_URL}/stock/out`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         ...formData,
+  //         qrCodeValue: formData.productName,
+  //       }),
+  //     });
+
+  //     const data = await res.json();
+
+  //     if (!res.ok) {
+  //       toast.error(data.message || "Error during stock out");
+  //       setLoading(false);
+  //       return;
+  //     }
+
+  //     toast.success("✅ Stock out successful");
+
+  //     setFormData({
+  //       productName: "",
+  //       quantity: "",
+  //       receiver: "",
+  //       issueDate: new Date().toISOString().split("T")[0],
+  //       description: "",
+  //     });
+  //   } catch (error) {
+  //     console.error("❌ Stock Out error:", error);
+  //     toast.error("Network error");
+  //   }
+  //   setLoading(false);
+  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -143,6 +185,7 @@ export default function StockOutPage() {
 
     setLoading(true);
     try {
+      console.log("➡️ Hitting backend:", `${BACKEND_URL}/stock/out`);
       const res = await fetch(`${BACKEND_URL}/stock/out`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -152,10 +195,18 @@ export default function StockOutPage() {
         }),
       });
 
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch (err) {
+        console.error("❌ Failed to parse JSON:", err);
+        const text = await res.text(); // log fallback
+        console.error("🔎 Raw response text:", text);
+        data = null;
+      }
 
       if (!res.ok) {
-        toast.error(data.message || "Error during stock out");
+        toast.error(data?.message || "❌ Error during stock out (Check endpoint or CORS)");
         setLoading(false);
         return;
       }
@@ -170,11 +221,12 @@ export default function StockOutPage() {
         description: "",
       });
     } catch (error) {
-      console.error("❌ Stock Out error:", error);
-      toast.error("Network error");
+      console.error("❌ Network error:", error);
+      toast.error("❌ Network error");
     }
     setLoading(false);
   };
+  
 
   return (
     <Layout>
@@ -185,11 +237,10 @@ export default function StockOutPage() {
           <button
             type="button"
             onClick={toggleScanner}
-            className={`mb-4 w-full py-3 rounded-lg ${
-              scanning
+            className={`mb-4 w-full py-3 rounded-lg ${scanning
                 ? "bg-red-600 hover:bg-red-700"
                 : "bg-blue-600 hover:bg-blue-700"
-            } text-white`}
+              } text-white`}
           >
             {scanning ? "Stop Scanning" : "Scan QR Code"}
           </button>
