@@ -18,7 +18,7 @@ const allowedOrigins = [
   /^https:\/\/e-khidmat.*\.vercel\.app$/  // ✅ Optional: allow all vercel preview deployments
 ];
 
-// ✅ CORS Middleware (use this here)
+// ✅ CORS Middleware
 app.use(cors({
   origin: function(origin, callback) {
     if (!origin) return callback(null, true); // allow Postman, curl
@@ -41,7 +41,7 @@ app.use(cors({
 
 app.use(express.json());
 
-// ✅ Then continue with DB connection and routes
+// ✅ MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -49,16 +49,16 @@ mongoose.connect(process.env.MONGO_URI, {
 .then(() => console.log("✅ MongoDB connected successfully"))
 .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// Routes
-app.use("/api/employees", employeeRoutes);
-app.use("/api/auth", authRoutes);
-app.use("/api/stock", stockRoutes);
+// ✅ ROUTES (changed /api/auth to /auth to match frontend)
+app.use("/employees", employeeRoutes);
+app.use("/auth", authRoutes); // 🔥 This is the key change!
+app.use("/stock", stockRoutes);
 
 app.get("/", (req, res) => {
   res.send("E-Khidmat backend is running 🚀");
 });
 
-// Error handler
+// ✅ Global Error Handler
 app.use((err, req, res, next) => {
   console.error("Global error handler:", err);
   res.status(500).json({ message: "Internal server error" });
