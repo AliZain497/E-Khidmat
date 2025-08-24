@@ -13,6 +13,7 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Backend URL:", process.env.REACT_APP_BACKEND_URL);
 
     try {
       const res = await API.post("/auth/login", formData);
