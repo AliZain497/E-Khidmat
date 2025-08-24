@@ -15,7 +15,7 @@ router.post("/in", addStock);
 router.get("/history", getStockHistory);
 
 // 🔴 Stock Out Routes
-router.post("/out", addStockOut);
+router.post("/stock/out", addStockOut);
 router.get("/out/history", getStockOutHistory); // ✅ GET all stock-out records
 
 export default router;
