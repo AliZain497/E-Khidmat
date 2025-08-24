@@ -22,6 +22,7 @@ export default function StockOutPage() {
 
   const html5QrCodeRef = useRef(null);
 
+  // Input change handler (quantity as number or empty string)
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -30,6 +31,7 @@ export default function StockOutPage() {
     }));
   };
 
+  // File upload QR scanner
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -48,13 +50,11 @@ export default function StockOutPage() {
         canvas.height = img.height;
         const ctx = canvas.getContext("2d");
         ctx.drawImage(img, 0, 0);
-
         const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const code = jsQR(imageData.data, imageData.width, imageData.height);
-
         if (code) {
           setFormData((prev) => ({ ...prev, productName: code.data }));
-          toast.success(`QR Code decoded from image: ${code.data}`);
+          toast.success(`QR Code decoded: ${code.data}`);
         } else {
           toast.error("No QR code found in the image");
         }
@@ -64,16 +64,16 @@ export default function StockOutPage() {
       };
       img.src = event.target.result;
     };
-
     reader.readAsDataURL(file);
   };
 
+  // Toggle QR scanner start/stop
   const toggleScanner = useCallback(() => {
     if (scanning) {
       html5QrCodeRef.current
         ?.stop()
         .then(() => html5QrCodeRef.current.clear())
-        .catch(() => { })
+        .catch(() => {})
         .finally(() => {
           html5QrCodeRef.current = null;
           setScanning(false);
@@ -83,6 +83,7 @@ export default function StockOutPage() {
     }
   }, [scanning]);
 
+  // Handle QR scanner lifecycle
   useEffect(() => {
     if (!scanning) return;
 
@@ -120,12 +121,13 @@ export default function StockOutPage() {
     checkCameraPermission();
 
     return () => {
-      html5QrCodeRef.current?.stop().catch(() => { });
-      html5QrCodeRef.current?.clear().catch(() => { });
+      html5QrCodeRef.current?.stop().catch(() => {});
+      html5QrCodeRef.current?.clear().catch(() => {});
       html5QrCodeRef.current = null;
     };
   }, [scanning, toggleScanner]);
 
+  // Auto focus productName input when scanner stops
   useEffect(() => {
     if (!scanning) {
       const input = document.querySelector('input[name="productName"]');
@@ -133,48 +135,7 @@ export default function StockOutPage() {
     }
   }, [scanning]);
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!formData.quantity || formData.quantity <= 0) {
-  //     toast.error("Please enter a valid quantity");
-  //     return;
-  //   }
-
-  //   setLoading(true);
-  //   try {
-  //     const res = await fetch(`${BACKEND_URL}/stock/out`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         ...formData,
-  //         qrCodeValue: formData.productName,
-  //       }),
-  //     });
-
-  //     const data = await res.json();
-
-  //     if (!res.ok) {
-  //       toast.error(data.message || "Error during stock out");
-  //       setLoading(false);
-  //       return;
-  //     }
-
-  //     toast.success("✅ Stock out successful");
-
-  //     setFormData({
-  //       productName: "",
-  //       quantity: "",
-  //       receiver: "",
-  //       issueDate: new Date().toISOString().split("T")[0],
-  //       description: "",
-  //     });
-  //   } catch (error) {
-  //     console.error("❌ Stock Out error:", error);
-  //     toast.error("Network error");
-  //   }
-  //   setLoading(false);
-  // };
+  // Submit form handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -200,7 +161,7 @@ export default function StockOutPage() {
         data = await res.json();
       } catch (err) {
         console.error("❌ Failed to parse JSON:", err);
-        const text = await res.text(); // log fallback
+        const text = await res.text();
         console.error("🔎 Raw response text:", text);
         data = null;
       }
@@ -213,6 +174,7 @@ export default function StockOutPage() {
 
       toast.success("✅ Stock out successful");
 
+      // Reset form to default
       setFormData({
         productName: "",
         quantity: "",
@@ -226,7 +188,6 @@ export default function StockOutPage() {
     }
     setLoading(false);
   };
-  
 
   return (
     <Layout>
@@ -237,10 +198,9 @@ export default function StockOutPage() {
           <button
             type="button"
             onClick={toggleScanner}
-            className={`mb-4 w-full py-3 rounded-lg ${scanning
-                ? "bg-red-600 hover:bg-red-700"
-                : "bg-blue-600 hover:bg-blue-700"
-              } text-white`}
+            className={`mb-4 w-full py-3 rounded-lg ${
+              scanning ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"
+            } text-white`}
           >
             {scanning ? "Stop Scanning" : "Scan QR Code"}
           </button>
@@ -264,17 +224,13 @@ export default function StockOutPage() {
 
           {permissionDenied && (
             <div className="text-red-600 mb-4 font-semibold">
-              Camera access denied. Please enable camera permission in your
-              browser.
+              Camera access denied. Please enable camera permission in your browser.
             </div>
           )}
 
           {!scanning && (
             <div className="mb-4">
-              <label
-                htmlFor="qr-upload"
-                className="block mb-1 font-semibold text-primary"
-              >
+              <label htmlFor="qr-upload" className="block mb-1 font-semibold text-primary">
                 Or upload an image with QR code
               </label>
               <input
