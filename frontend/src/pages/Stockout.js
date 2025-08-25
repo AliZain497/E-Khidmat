@@ -5,6 +5,7 @@ import { Html5Qrcode } from "html5-qrcode";
 import jsQR from "jsqr";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000";
+console.log("📡 Using backend URL:", BACKEND_URL); 
 
 export default function StockOutPage() {
   const [formData, setFormData] = useState({

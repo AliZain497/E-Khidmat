@@ -52,6 +52,8 @@ mongoose.connect(process.env.MONGO_URI, {
 // ✅ ROUTES (changed /api/auth to /auth to match frontend)
 app.use("/employees", employeeRoutes);
 app.use("/auth", authRoutes); // 🔥 This is the key change!
+console.log("📦 Registering stock routes...");
+
 app.use("/stock", stockRoutes);
 
 app.get("/", (req, res) => {

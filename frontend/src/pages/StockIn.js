@@ -38,7 +38,7 @@ export default function StockInPage() {
         qrCodeValue: formData.productName,
       };
 
-      const res = await fetch("http://localhost:5000/stock/in", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/stock/in`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
