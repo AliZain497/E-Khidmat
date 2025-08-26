@@ -52,7 +52,7 @@ mongoose.connect(process.env.MONGO_URI, {
 // ✅ ROUTES (changed /api/auth to /auth to match frontend)
 app.use("/employees", employeeRoutes);
 app.use("/auth", authRoutes); // 🔥 This is the key change!
-app.use("/api/auth", authRoutes);
+// app.use("/api/auth", authRoutes);
 
 console.log("📦 Registering stock routes...");
 
