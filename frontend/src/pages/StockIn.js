@@ -6,6 +6,8 @@ import { QRCodeSVG } from 'qrcode.react';
 
 export default function StockInPage() {
   const API_BASE = process.env.REACT_APP_BACKEND_URL;
+  console.log("✅ API URL:", process.env.REACT_APP_BACKEND_URL);
+
   const [formData, setFormData] = useState({
     productName: "",
     quantity: "",
