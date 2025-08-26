@@ -9,6 +9,7 @@ export default function ForgotPassword() {
   const [resendDisabled, setResendDisabled] = useState(false);
   const [timer, setTimer] = useState(30);
   const API_BASE = process.env.REACT_APP_BACKEND_URL;
+  console.log(API_BASE);
 
   useEffect(() => {
     let interval;
