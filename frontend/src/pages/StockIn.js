@@ -25,6 +25,7 @@ export default function StockInPage() {
   };
 
   const handleSubmit = async (e) => {
+    const API_BASE = process.env.REACT_APP_API_URL;
     e.preventDefault();
 
     if (!formData.productName.trim() || isNaN(formData.quantity) || formData.quantity <= 0) {
@@ -38,7 +39,7 @@ export default function StockInPage() {
         qrCodeValue: formData.productName,
       };
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/stock/in`, {
+      const res = await fetch(`${API_BASE}/stock/in`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
