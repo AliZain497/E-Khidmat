@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { QRCodeSVG } from 'qrcode.react';
 
 export default function StockInPage() {
+  const API_BASE = process.env.REACT_APP_BACKEND_URL;
   const [formData, setFormData] = useState({
     productName: "",
     quantity: "",
@@ -25,7 +26,7 @@ export default function StockInPage() {
   };
 
   const handleSubmit = async (e) => {
-    const API_BASE = process.env.REACT_APP_API_URL;
+    
     e.preventDefault();
 
     if (!formData.productName.trim() || isNaN(formData.quantity) || formData.quantity <= 0) {
