@@ -8,6 +8,7 @@ export default function ForgotPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [resendDisabled, setResendDisabled] = useState(false);
   const [timer, setTimer] = useState(30);
+  const API_BASE = process.env.REACT_APP_BACK_URL;
 
   useEffect(() => {
     let interval;
@@ -27,7 +28,7 @@ export default function ForgotPassword() {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/forgot-password/request-otp", {
+      const res = await fetch(`${API_BASE}/auth/forgot-password/request-otp`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
@@ -47,13 +48,14 @@ export default function ForgotPassword() {
   };
 
   const verifyOtpAndResetPassword = async () => {
+    
     if (!otp.trim() || !newPassword.trim()) {
       toast.error("Please enter OTP and new password");
       return;
     }
 
     try {
-      const res = await fetch("http://localhost:5000/api/auth/forgot-password/verify", {
+      const res = await fetch(`${API_BASE}/auth/forgot-password/verify`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp, password: newPassword }),

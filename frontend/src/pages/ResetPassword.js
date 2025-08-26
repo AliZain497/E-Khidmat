@@ -11,6 +11,7 @@ export default function ResetPassword() {
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
+    const API_BASE = process.env.REACT_APP_BACKEND_URL;
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -20,7 +21,7 @@ export default function ResetPassword() {
 
     try {
       setLoading(true);
-      const res = await fetch(`http://localhost:5000/api/auth/reset-password/${token}`, {
+      const res = await fetch(`${API_BASE}/auth/reset-password/${token}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password }),
