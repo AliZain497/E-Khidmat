@@ -1,0 +1,28 @@
+.neon-btn {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(22, 163, 74, 0.15);
+  border: 2px solid #16a34a;
+  color: #16a34a;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow:
+    0 4px 8px rgba(22, 163, 74, 0.2),
+    inset 0 -3px 5px rgba(255, 255, 255, 0.3);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.neon-btn:hover {
+  background: #16a34a;
+  color: white;
+  box-shadow:
+    0 6px 14px rgba(22, 163, 74, 0.5),
+    inset 0 -3px 7px rgba(255, 255, 255, 0.6);
+  transform: scale(1.12);
+  border-radius: 18px;
+}

@@ -1,59 +1,59 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { EmployeeProvider } from "./components/EmployeeContext"; // ✅ Import Context
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import OtpVerify from "./pages/OtpVerify";
-import Dashboard from "./pages/Dashboard";
-import Employees from "./pages/Employees";
-import AddEmployeePage from "./pages/AddEmployee"; // ✅ Updated name
-import EmployeeListPage from "./pages/EmployeeList"; // ✅ Updated name
-import StockInPage from "./pages/StockIn";
-import StockHistory from "./pages/StockInHistory";
-import StockOut from "./pages/Stockout";
-import StockOutHistory from "./pages/StockOutHistory";
-import ForgotPassword from "./pages/ForgetPassword";
-import ResetPassword from "./pages/ResetPassword";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+// App.js
+import { Routes, Route, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
+
+import Home from "./pages/HomePage";
+import Overview from "./pages/Overview";
+import Functions from "./pages/Functions";
+import History from "./pages/History";
+import OurTeam from "./pages/OurTeam";
+import Rules from "./pages/Rules";
+import SliderAdmin from './pages/SliderAdmin';
+import AdminDashboard from "./pages/AdminDashboard";
+import ScrollToTop from "./components/ScrollToTop";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  return (
-    <EmployeeProvider>
-      <Router>
-        <div>
-          <Routes>
-            <Route path="/" element={<Signup />} />   {/* Default signup */}
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/otp/verify" element={<OtpVerify />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} /> 
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/employees" element={<Employees />} />
-            <Route path="/employees/add" element={<AddEmployeePage />} />
-            <Route path="/employees/list" element={<EmployeeListPage />} />
-            <Route path="/stock/in" element={<StockInPage />} />
-            <Route path="/stockIn/history" element={<StockHistory />} />
-            <Route path="/stock/out" element={<StockOut />} />
-            <Route path="/stockOut/history" element={<StockOutHistory />} />
-            <Route path="/reset-password/:token" element={<ResetPassword />} />
-          </Routes>
+  const location = useLocation();  // ✅ safe to use now
+  const [sliderVisible] = useState(true);
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false,
+      mirror: true,
+    });
+  }, []);
+  useEffect(() => {
+    AOS.refresh();
+  }, [sliderVisible]);
 
-          {/* ToastContainer outside Routes */}
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={true}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="colored"
-          />
-        </div>
-      </Router>
-    </EmployeeProvider>
+  useEffect(() => {
+    AOS.refresh(); // ✅ triggers on every route change
+  }, [location.pathname]);
+
+  return (
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/overview" element={<Overview />} />
+        <Route path="/functions" element={<Functions />} />
+        <Route path="/history" element={<History />} />
+        <Route path="/team" element={<OurTeam />} />
+        <Route path="/rules" element={<Rules />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/sliders" element={<SliderAdmin />} />
+      </Routes>
+
+      <ScrollToTop />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="colored"
+      />
+    </>
   );
 }
 
