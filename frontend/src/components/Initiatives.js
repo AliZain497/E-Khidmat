@@ -1,18 +1,11 @@
-import React, { useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
-
+import React from "react";
 export default function Initiatives() {
-    useEffect(() => {
-        AOS.init({ duration: 500, once: false, mirror: true });
-    }, []);
 
     return (
-        <div className="min-h-screen flex flex-col bg-white" data-aos="fade-up">
+        <div className="min-h-screen flex flex-col bg-white">
             <section
                 id="initiatives"
                 className="py-12 sm:py-20 px-8 sm:px-4 flex-grow"
-                data-aos="fade-up"
             >
                 <div className="text-center mb-8 sm:mb-12 max-w-3xl mx-auto">
                     <h2 className="text-3xl font-bold mb-2 text-green-600">

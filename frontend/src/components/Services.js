@@ -1,12 +1,7 @@
 // src/components/ServicesSection.js
-import React, { useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import React from "react";
 
 export default function ServicesSection() {
-    useEffect(() => {
-        AOS.init({ duration: 500, once: false, mirror: true });
-    }, []);
     const services = [
         { name: "Network of Water Supply", icon: "/Icons/network-of-water-supply.png" },
         { name: "Urban or Rural Infrastructure", icon: "/Icons/urban-rural-infra.png" },
@@ -23,7 +18,7 @@ export default function ServicesSection() {
     return (
         <section
             id="services"
-            className="bg-gray-50 py-12 px-4 bg-gray-100 sm:px-8" data-aos="fade-up"
+            className="bg-gray-50 py-12 px-4 bg-gray-100 sm:px-8"
         >
             <div className="max-w-6xl mx-auto text-center mb-10">
                 <h2 className="text-3xl font-bold text-green-600">Our Services</h2>

@@ -1,7 +1,5 @@
 // src/pages/Leadership.js
-import React, { useEffect } from "react";
-import AOS from "aos";
-import "aos/dist/aos.css";
+import React from "react";
 
 // Import images
 import adminPic from "../media/administrator.png";
@@ -54,12 +52,9 @@ const leadershipData = [
 ];
 
 export default function Leadership() {
-    useEffect(() => {
-        AOS.init({ duration: 500, once: true, mirror: true });
-    }, []);
 
     return (
-        <div className="min-h-screen flex flex-col" data-aos="fade-up">
+        <div className="min-h-screen flex flex-col">
             <section className="py-12 sm:py-16 bg-gray-100 px-8 sm:px-4">
                 <div className="text-center mb-8 sm:mb-12 max-w-3xl mx-auto">
                     <h2 className="text-3xl font-bold mb-2 text-green-600">Our Leadership</h2>

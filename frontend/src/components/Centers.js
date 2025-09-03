@@ -1,11 +1,6 @@
-import React, { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React from 'react';
 
 export default function Centers() {
-    useEffect(() => {
-        AOS.init({ duration: 500, once: false, mirror: true });
-    }, []);
 
     const centers = [
         {
@@ -37,16 +32,16 @@ export default function Centers() {
 
 
     return (
-        <div className="flex flex-col" data-aos="fade-up">
-            <main className="flex-grow text-center bg-white sm:py-20 px-8 sm:px-4" data-aos="fade-up">
-                <div className="text-center mb-8 sm:mb-12 max-w-3xl mx-auto" data-aos="fade-up">
+        <div className="flex flex-col">
+            <main className="flex-grow text-center bg-white sm:py-20 px-8 sm:px-4">
+                <div className="text-center mb-8 sm:mb-12 max-w-3xl mx-auto">
                     <h2 className="text-3xl font-bold mb-2 text-green-600">Facilitation Centers</h2>
                     <p className="text-gray-600 mt-2 text-sm sm:text-base">
                         Providing services to citizens with convenience and care
                     </p>
                 </div>
 
-                <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6" data-aos="fade-up">
+                <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                     {centers.map((center, i) => (
                         <div
                             key={i}

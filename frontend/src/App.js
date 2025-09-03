@@ -1,9 +1,6 @@
 // App.js
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
-
+import { AnimatePresence } from 'framer-motion';
 import Home from "./pages/HomePage";
 import Overview from "./pages/Overview";
 import Functions from "./pages/Functions";
@@ -17,26 +14,11 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  const location = useLocation();  // ✅ safe to use now
-  const [sliderVisible] = useState(true);
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: false,
-      mirror: true,
-    });
-  }, []);
-  useEffect(() => {
-    AOS.refresh();
-  }, [sliderVisible]);
-
-  useEffect(() => {
-    AOS.refresh(); // ✅ triggers on every route change
-  }, [location.pathname]);
+  const location = useLocation();
 
   return (
-    <>
-      <Routes>
+    <AnimatePresence mode="wait">
+      <><Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/overview" element={<Overview />} />
         <Route path="/functions" element={<Functions />} />
@@ -52,8 +34,8 @@ function App() {
         position="top-right"
         autoClose={3000}
         theme="colored"
-      />
-    </>
+      /></>
+    </AnimatePresence>
   );
 }
 

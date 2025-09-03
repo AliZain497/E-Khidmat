@@ -1,29 +1,18 @@
-import { useLocation } from 'react-router-dom';
-import { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import { useInView } from "react-intersection-observer";
+import { motion } from "framer-motion";
 
-function Layout({ children }) {
-    const location = useLocation();
+function AnimatedSection() {
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.2 });
 
-    useEffect(() => {
-        AOS.init({
-            duration: 700,
-            once: false,
-            mirror: true,
-        });
-    }, []);
-
-    useEffect(() => {
-        // Whenever route changes, refresh AOS
-        AOS.refresh();
-    }, [location.pathname]);
-
-    return (
-        <>
-            {children}
-        </>
-    );
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="your-section-class"
+    >
+      {/* Your section content */}
+    </motion.div>
+  );
 }
-
-export default Layout;

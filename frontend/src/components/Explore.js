@@ -1,11 +1,6 @@
-import React, { useEffect } from 'react';
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import React from 'react';
 
 export default function Explore() {
-  useEffect(() => {
-    AOS.init({ duration: 500, once: false, mirror: true });
-  }, []);
   const images = [
     { src: '/media/explore1.jpg', alt: 'Explore 1' },
     { src: '/media/explore2.jpg', alt: 'Explore 2' },
@@ -19,12 +14,12 @@ export default function Explore() {
   return (
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow py-16 px-8 sm:px-4 md:px-16 bg-gray-100 text-gray-800">
-        <h1 className="text-3xl font-bold text-center text-green-600 mb-16" data-aos="fade-right">
+        <h1 className="text-3xl font-bold text-center text-green-600 mb-16">
           Explore Mamunkanjan
         </h1>
 
         {/* Responsive Image Grid */}
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4" data-aos="fade-up">
+        <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
           {images.map((image, index) => (
             <div key={index} className="overflow-hidden rounded-lg break-inside-avoid shadow-md">
               <img
