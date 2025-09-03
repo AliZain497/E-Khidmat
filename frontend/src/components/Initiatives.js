@@ -4,7 +4,7 @@ import "aos/dist/aos.css";
 
 export default function Initiatives() {
     useEffect(() => {
-        AOS.init({ duration: 1000, once: false, mirror: true });
+        AOS.init({ duration: 500, once: false, mirror: true });
     }, []);
 
     return (

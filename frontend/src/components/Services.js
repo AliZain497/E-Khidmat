@@ -5,7 +5,7 @@ import "aos/dist/aos.css";
 
 export default function ServicesSection() {
     useEffect(() => {
-        AOS.init({ duration: 1000, once: false, mirror: true });
+        AOS.init({ duration: 500, once: false, mirror: true });
     }, []);
     const services = [
         { name: "Network of Water Supply", icon: "/Icons/network-of-water-supply.png" },

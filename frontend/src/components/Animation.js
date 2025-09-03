@@ -8,7 +8,7 @@ function Layout({ children }) {
 
     useEffect(() => {
         AOS.init({
-            duration: 1000,
+            duration: 700,
             once: false,
             mirror: true,
         });

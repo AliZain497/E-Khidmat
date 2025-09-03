@@ -55,7 +55,7 @@ const leadershipData = [
 
 export default function Leadership() {
     useEffect(() => {
-        AOS.init({ duration: 1000, once: true, mirror: true });
+        AOS.init({ duration: 500, once: true, mirror: true });
     }, []);
 
     return (

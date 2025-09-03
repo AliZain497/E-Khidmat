@@ -4,7 +4,7 @@ import 'aos/dist/aos.css';
 
 export default function Centers() {
     useEffect(() => {
-        AOS.init({ duration: 1000, once: false, mirror: true });
+        AOS.init({ duration: 500, once: false, mirror: true });
     }, []);
 
     const centers = [
